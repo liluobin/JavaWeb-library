@@ -50,12 +50,7 @@ public class LoginServlet extends HttpServlet {
             switch (type){
                 case "reader":
                     session.setAttribute("reader",(Reader)object);
-                    List<Book> list = bookService.findAll(1);
-                    req.setAttribute("list",list);
-                    req.setAttribute("dataPrePage",LIMIT);
-                    req.setAttribute("currentPage",1);
-                    req.setAttribute("pages",bookService.getPages());
-                    req.getRequestDispatcher("index.jsp").forward(req,resp);
+                    resp.sendRedirect("/book?page=1");
                     break;
 
                 case "admin":

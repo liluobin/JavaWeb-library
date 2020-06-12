@@ -1,6 +1,7 @@
 package com.luobin.service.impl;
 
 import com.luobin.entity.Book;
+import com.luobin.entity.Borrow;
 import com.luobin.repository.BookRepository;
 import com.luobin.repository.BorrowRepository;
 import com.luobin.repository.impl.BookRepositoryImpl;
@@ -46,5 +47,37 @@ public class BookServiceImpl implements BookService {
         Date date2 = calendar.getTime();
         String returnTime = simpleDateFormat.format(date2);
         borrowRepository.insert(bookId,readerId,borrowTime,returnTime,null,0);
+    }
+
+    @Override
+    public List<Borrow> findAllByReaderId(Integer readerid,Integer page) {
+        int index=(page-1)*LIMIT;
+        return borrowRepository.findAllByReaderId(readerid,index,LIMIT);
+    }
+
+    @Override
+    public int getBorrowPages(Integer readerid) {
+
+        int num=borrowRepository.getPages(readerid);
+        int pages=(num+LIMIT-1)/LIMIT;
+        return pages;
+    }
+
+    @Override
+    public List<Borrow> findAllByState(Integer state, Integer page) {
+        int index=(page-1)*LIMIT;
+        return borrowRepository.findAllByState(state,index,LIMIT);
+    }
+
+    @Override
+    public int getBorrowPagesByState(Integer state) {
+        int num=borrowRepository.getPagesByState(state);
+        int pages=(num+LIMIT-1)/LIMIT;
+        return pages;
+    }
+
+    @Override
+    public void setBorrowById(Integer id, Integer state, Integer adminId) {
+        borrowRepository.setBorrowById(id,state,adminId);
     }
 }

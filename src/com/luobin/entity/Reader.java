@@ -75,6 +75,12 @@ public class Reader {
         this.gender = gender;
     }
 
+    public Reader(String name, String tel, String cardid) {
+        this.name = name;
+        this.tel = tel;
+        this.cardid = cardid;
+    }
+
     @Override
     public String toString() {
         return "Reader{" +

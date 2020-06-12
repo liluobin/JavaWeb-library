@@ -1,6 +1,7 @@
 package com.luobin.controller;
 
 import com.luobin.entity.Book;
+import com.luobin.entity.Borrow;
 import com.luobin.entity.Reader;
 import com.luobin.service.BookService;
 import com.luobin.service.impl.BookServiceImpl;
@@ -28,10 +29,7 @@ public class BookSevlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session =req.getSession();
         Reader reader = (Reader) session.getAttribute("reader");
-        if(reader==null){
-            resp.sendRedirect("login.jsp");
-            return ;
-        }
+
         //流程控制
         String method=req.getParameter("method");
         if(method==null){
@@ -52,7 +50,17 @@ public class BookSevlet extends HttpServlet {
             case "addBorrow":
                 Integer bookid = Integer.parseInt(req.getParameter("bookid"));
                 bookService.addBorrow(bookid,reader.getId());
+                resp.sendRedirect("/book?method=findBorrow&page=1");
                 break;
+            case "findBorrow":
+                String pagestr= req.getParameter("page");
+                int pageint =Integer.parseInt(pagestr);
+                List<Borrow> listBorrow = bookService.findAllByReaderId(reader.getId(),pageint);
+                req.setAttribute("currentPage",pageint);
+                req.setAttribute("dataPrePage",LIMIT);
+                req.setAttribute("pages",bookService.getBorrowPages(reader.getId()));
+                req.setAttribute("listBorrow",listBorrow);
+                req.getRequestDispatcher("borrow.jsp").forward(req,resp);
         }
 
 

@@ -2,6 +2,7 @@ package com.luobin.controller;
 
 import com.luobin.entity.Admin;
 import com.luobin.entity.Book;
+import com.luobin.entity.Borrow;
 import com.luobin.entity.Reader;
 import com.luobin.service.BookService;
 import com.luobin.service.LoginService;
@@ -44,8 +45,6 @@ public class LoginServlet extends HttpServlet {
             resp.sendRedirect("/login.jsp");
         }
         else{
-            System.out.println("yessssss");
-
             HttpSession session=req.getSession();
             switch (type){
                 case "reader":
@@ -55,6 +54,9 @@ public class LoginServlet extends HttpServlet {
 
                 case "admin":
                     session.setAttribute("admin",(Admin)object);
+                    resp.sendRedirect("/admin?method=findAllBorrow&page=1");
+                    //跳转到管理员页面
+
                     break;
             }
         }
